@@ -1,0 +1,9 @@
+{
+    "finbra_MUN_BalancoPatrimonialDCA(AnexoI-AB).zip": "finbra_balanco_patrimonial.csv",
+    "finbra_MUN_DespesasOrcamentarias(AnexoI-D).zip": "finbra_despesas_orcamentarias.csv",
+    "finbra_MUN_DespesasporFuncao(AnexoI-E).zip": "finbra_despesas_por_funcao.csv",
+    "finbra_MUN_ExecucaodeRestosaPagar(AnexoI-F).zip": "finbra_execucao_de_restos_a_pagar.csv",
+    "finbra_MUN_ExecucaodeRestosaPagarporFuncao(AnexoI-G).zip": "finbra_execucao_de_restos_a_pagar_por_funcao.csv",
+    "finbra_MUN_ReceitasOrcamentarias(AnexoI-C).zip": "finbra_receitas_orcamentarias.csv",
+    "finbra_MUN_VariacoesPatrimoniaisDCA(AnexoI-HI).zip": "finbra_variacoes_patrimoniais_DCA.csv"
+}
