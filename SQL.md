@@ -118,6 +118,34 @@ Resultado:
 
 O campo filtrado não precisa necessariamente aparecer na consulta (após o `SELECT`) para ser utilizado como filtro.
 
+### Lógica Booleana
+Ao fazer filtros com o comando `WHERE` é possível aplicar a lógica booleana de E / OU, comandos `AND` / `OR`. `AND` só permite passar pelo filtro se ambas as consições forem verdadeiras. e.g.:
+```sql
+SELECT
+    nome AS "Nome do Produto",
+    marca AS "Marca do Produto"
+FROM Produto
+WHERE id_produto > 0 AND marca = 'Mikasa';
+```
+Resultado:
+| Nome do Produto | Marca do Produto |
+|:-:|:-:|
+| Bola de Vôlei | Mikasa |
+
+`OR` só permite passar pelo filtro se apenas uma das condições forem verdadeiras. e.g.:
+```sql
+SELECT
+    nome AS "Nome do Produto",
+    marca AS "Marca do Produto"
+FROM Produto
+WHERE id_produto = 1 OR marca = 'Penalty';
+```
+Resultado:
+| Nome do Produto | Marca do Produto |
+|:-:|:-:|
+| Bola de Vôlei | Mikasa | 
+| Bola de Futebol | Penalty |
+
 ## Servidor utilizado em GI
 O nome é SQL Server e a ferramenta utilizada para acessar os Bancos de Dados é o SQL Server Management Studio (SSMS) da Microsoft que pode ser baixado [aqui](https://learn.microsoft.com/pt-br/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16).
 
