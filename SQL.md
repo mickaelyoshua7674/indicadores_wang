@@ -2,14 +2,11 @@
 ## SELECT
 Para extrair dados de banco de dados é utilizado o comando `SELECT` seguido das colunas desejadas e o comando `FROM` indicando onde as colunas indicadas após o `SELECT` estão. Todas as consultas em SQL terminam com um `;`.
 
-e.g.:
-
 **Produto**
 | id_produto | nome | marca |
 |:-:|:-:|:-:|
 | 1 | Bola de Vôlei | Mikasa | 
 | 2 | Bola de Futebol | Penalty |
-
 
 **Vendedor**
 | id_vendedor | nome |
@@ -17,8 +14,7 @@ e.g.:
 | 1 | Marcos |
 | 2 | Débora |
 
-Ambas as tabelas possuem uma coluna `nome` por isso se faz necessário o comando `FROM`.
-
+Ambas as tabelas possuem uma coluna `nome` por isso se faz necessário o comando `FROM`.<br>
 A formatação da consulta pode ser feita de diferentes formas, mas sempre terá no mesmo resultado contanto que os comando e a ordem deles seja a mesma.
 ```sql
 SELECT
