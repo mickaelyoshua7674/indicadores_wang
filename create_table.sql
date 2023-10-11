@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS dbo.valores_finbra;
-CREATE TABLE dbo.valores_finbra (
+DROP TABLE IF EXISTS SICONFI.dbo.valores_finbra;
+CREATE TABLE SICONFI.dbo.valores_finbra (
     Ano INT,
     Tipo VARCHAR(50),
-    Instituição VARCHAR(74),
+    Instituicao VARCHAR(74),
     IBGE INT,
     UF VARCHAR(3),
-    População INT,
+    Populacao INT,
     Coluna VARCHAR(96),
     Conta VARCHAR(160),
-    Descrição Conta VARCHAR(213),
-    Identificador da Conta VARCHAR(86),
+    Descricao_Conta VARCHAR(213),
+    Identificador_Conta VARCHAR(86),
     Valor FLOAT
 );
