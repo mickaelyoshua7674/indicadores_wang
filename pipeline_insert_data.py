@@ -56,5 +56,5 @@ files_names = os.listdir(os.path.join(DATA_PATH,year))
 full_df = pd.concat([read_and_format_df(year,file_name) for file_name in files_names])
 
 with engine.connect() as conn:
-    full_df.iloc[:10_000,:].to_sql(name="SICONFI.dbo.valores_finbra", con=conn, if_exists="append", index=False)
+    full_df.iloc[:10_000,:].to_sql(name="valores_finbra", con=conn, if_exists="append", index=False)
     conn.commit()
