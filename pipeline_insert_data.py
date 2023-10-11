@@ -1,7 +1,16 @@
 from sqlalchemy.engine import create_engine
 from sqlalchemy import text, URL
+from datetime import datetime
+import os, json, gc, time
 import pandas as pd
-import os, json
+
+hour = 18
+print(f"Waiting until {hour}hrs...")
+while datetime.now().hour < hour:
+    time.sleep(30*60)
+print(f"Lets start...\n\n")
+del hour
+gc.collect()
 
 with open("./secrets.txt", "r") as f:
     driver, username, password, host, port, database = f.read().split(",")
