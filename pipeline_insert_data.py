@@ -50,11 +50,10 @@ with engine.begin() as conn:
 COLUMNS_ORDER = ["Ano","Tipo","Instituicao","IBGE","UF","Populacao","Coluna","Conta","Descricao_Conta","Identificador_Conta","Valor"]
 YEARS = ["2022","2021","2020","2019","2018","2017","2016","2015","2014","2013"]
 DATA_PATH = "data"
-year = YEARS[0]
-files_names = os.listdir(os.path.join(DATA_PATH,year))
-
-full_df = pd.concat([read_and_format_df(year,file_name) for file_name in files_names])
 
 with engine.connect() as conn:
-    full_df.iloc[:10_000,:].to_sql(name="valores_finbra", con=conn, if_exists="append", index=False)
-    conn.commit()
+        for year in YEARS:
+            files_names = os.listdir(os.path.join(DATA_PATH,year))
+            full_df = pd.concat([read_and_format_df(year,file_name) for file_name in files_names])
+            full_df.to_sql(name="valores_finbra", con=conn, if_exists="append", index=False)
+            conn.commit()
