@@ -65,5 +65,5 @@ with engine.connect() as conn:
             full_df = pd.concat([read_and_format_df(year,file_name) for file_name in files_names])
             full_df.to_sql(name="valores_finbra", con=conn, if_exists="append", index=False)
             conn.commit()
-end = time.time()
-print(f"Execution time {round(end-start,2)}s / {round((end-start)/60,2)}min / {round(((end-start)/60)/60,2)}hr")
+exec_time = time.time()-start
+print(f"Execution time {round(exec_time,2)}s / {round((exec_time)/60,2)}min / {round(((exec_time)/60)/60,2)}hr")
