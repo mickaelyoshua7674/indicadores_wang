@@ -1,7 +1,7 @@
 from sqlalchemy.engine import create_engine
 from sqlalchemy import text, URL
 from datetime import datetime
-import os, json, gc, time
+import os, json, time
 import pandas as pd
 
 hour = 18
@@ -9,8 +9,6 @@ print(f"Waiting until {hour}hrs...")
 while datetime.now().hour < hour:
     time.sleep(30*60)
 print(f"Lets start...\n\n")
-del hour
-gc.collect()
 
 with open("./secrets.txt", "r") as f:
     driver, username, password, host, port, database = f.read().split(",")
@@ -37,6 +35,8 @@ def get_des_conta(x:str) -> str:
         return x
     return sx[1]
 
+DATA_PATH = "data"
+COLUMNS_ORDER = ["Ano","Tipo","Instituicao","IBGE","UF","Populacao","Coluna","Conta","Descricao_Conta","Identificador_Conta","Valor"]
 def read_and_format_df(year:str, file_name:str) -> pd.DataFrame:
     file_path = os.path.join(DATA_PATH,year,file_name)
     df = pd.read_csv(file_path, sep=";", encoding="latin-1", skiprows=3)
@@ -56,13 +56,14 @@ def read_and_format_df(year:str, file_name:str) -> pd.DataFrame:
 with engine.begin() as conn:
     conn.execute(text(create_table_script))
 
-COLUMNS_ORDER = ["Ano","Tipo","Instituicao","IBGE","UF","Populacao","Coluna","Conta","Descricao_Conta","Identificador_Conta","Valor"]
 YEARS = ["2022","2021","2020","2019","2018","2017","2016","2015","2014","2013"]
-DATA_PATH = "data"
-
+start = time.time()
 with engine.connect() as conn:
         for year in YEARS:
+            print(f"Inserting year {year}...")
             files_names = os.listdir(os.path.join(DATA_PATH,year))
             full_df = pd.concat([read_and_format_df(year,file_name) for file_name in files_names])
             full_df.to_sql(name="valores_finbra", con=conn, if_exists="append", index=False)
             conn.commit()
+end = time.time()
+print(f"Execution time {round(end-start,2)}s / {round((end-start)/60,2)}min / {round(((end-start)/60)/60,2)}hr")
