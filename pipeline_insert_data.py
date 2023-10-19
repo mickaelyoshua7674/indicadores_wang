@@ -1,14 +1,14 @@
 from sqlalchemy.engine import create_engine
 from sqlalchemy import text, URL
 from datetime import datetime
-import os, json, time
+import os, json, time, re
 import pandas as pd
 
-hour = 18
-print(f"Waiting until {hour}hrs...")
-while datetime.now().hour < hour:
-    time.sleep(30*60)
-print(f"Lets start...\n\n")
+# hour = 18
+# print(f"Waiting until {hour}hrs...")
+# while datetime.now().hour < hour:
+#     time.sleep(30*60)
+# print(f"Lets start...\n\n")
 
 with open("./secrets.txt", "r") as f:
     driver, username, password, host, port, database = f.read().split(",")
@@ -24,16 +24,17 @@ with open("file_field.json", "r", encoding="utf-8") as f:
 to_float = lambda x: x.replace(",", ".")
 
 def get_conta(x:str) -> str:
-    sx = x.split(" - ")
-    if len(sx) == 1:
-        return "Sem Numero"
-    return sx[0]
+    if not re.fullmatch("[0-9]", x[0]):
+        return "Sem Conta"
+    start_word_index = re.search("[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]{1,}", x).start()
+    remove_index = re.search("[^0-9\.]", x[:start_word_index]).start()
+    return x[:remove_index]
 
 def get_des_conta(x:str) -> str:
-    sx = x.split(" - ")
-    if len(sx) == 1:
+    if not re.fullmatch("[0-9]", x[0]):
         return x
-    return sx[1]
+    start_word_index = re.search("[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ]{1,}", x).start()
+    return x[start_word_index:]
 
 DATA_PATH = "data"
 COLUMNS_ORDER = ["Ano","Tipo","Instituicao","IBGE","UF","Populacao","Coluna","Conta","Descricao_Conta","Identificador_Conta","Valor"]
@@ -59,11 +60,11 @@ with engine.begin() as conn:
 YEARS = ["2022","2021","2020","2019","2018","2017","2016","2015","2014","2013"]
 start = time.time()
 with engine.connect() as conn:
-        for year in YEARS:
-            print(f"Inserting year {year}...")
-            files_names = os.listdir(os.path.join(DATA_PATH,year))
-            full_df = pd.concat([read_and_format_df(year,file_name) for file_name in files_names])
-            full_df.to_sql(name="valores_finbra", con=conn, if_exists="append", index=False)
-            conn.commit()
+    for year in YEARS:
+        print(f"Inserting year {year}...")
+        files_names = os.listdir(os.path.join(DATA_PATH,year))
+        full_df = pd.concat([read_and_format_df(year,file_name) for file_name in files_names])
+        full_df.to_sql(name="valores_finbra", con=conn, if_exists="append", index=False)
+        conn.commit()
 exec_time = time.time()-start
 print(f"Execution time {round(exec_time,2)}s / {round((exec_time)/60,2)}min / {round(((exec_time)/60)/60,2)}hr")
